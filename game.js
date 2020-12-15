@@ -8,14 +8,18 @@ function nextSequence() {
   var randomNumber = Math.floor((Math.random() * 4));
   var randomChosenColor = buttonColors[randomNumber];
   gamePattern.push(randomChosenColor);
-  var newButton = gamePattern[gamePattern.length - 1];
-  $("#" + newButton).fadeOut(100).fadeIn(100);
-  playSound(newButton);
+  gamePattern.forEach(function(newButton, i) {
+    setTimeout(function () {
+      $("#" + newButton).fadeOut(100).fadeIn(100);
+      playSound(newButton);
+    }, 1000*i)
+  })
+
   level += 1;
   $("#level-title").text("Level " + level);
 }
 
-$(".btn").click(function () {
+$(".btn").click(function() {
   var userChosenColor = this.id;
   userClickedPattern.push(userChosenColor);
   playSound(userChosenColor);
@@ -48,8 +52,7 @@ function checkAnswer(currentLevel) {
       setTimeout(nextSequence, 1000);
       userClickedPattern = [];
     }
-  }
-  else {
+  } else {
     playSound("gawr");
     $("body").addClass("game-over");
     setTimeout(function() {
